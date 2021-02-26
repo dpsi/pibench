@@ -151,12 +151,15 @@ void benchmark_t::load() noexcept
         // Generate random value
         auto value_ptr = value_generator_.next();
 
-        auto val = std::string(value_ptr, opt_.value_size);
-        val[0] &= ~mask;
-        // val[0] = '\0';
-        key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
+        // auto val = std::string(value_ptr, opt_.value_size);
+        // val[0] &= ~mask;
+        // // val[0] = '\0';
+        // key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
+        uint64_t k = *reinterpret_cast<const uint64_t *>(key_ptr);
+        uint64_t v = *reinterpret_cast<const uint64_t *>(value_ptr);
+        key_vals_.insert(k,v);
         
-        auto r = tree_->insert(key_ptr, key_generator_->size(), val.c_str(), opt_.value_size);
+        auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
     }
     auto elapsed = sw.elapsed<std::chrono::milliseconds>();
@@ -256,20 +259,18 @@ void benchmark_t::run() noexcept
                     case operation_t::READ:
                     {
                         auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
-                        std::string key_str{key_ptr, key_generator_->size()};
-                        if (key_vals_.find(key_str) == key_vals_.end())
+                        // std::string key_str{key_ptr, key_generator_->size()};
+                        uint64_t k = *reinterpret_cast<const uint64_t *>(key_ptr);
+                        uint64_t v = *reinterpret_cast<const uint64_t *>(value_out);
+                        if (key_vals_.find(k) == key_vals_.end())
                         {
-                            std::cerr   << "key not found? k/v: " << std::hex << print(key_ptr, key_generator_->size())
-                                        << "/" << print(value_out, opt_.value_size) << " ";
+                            std::cerr   << "key not found? k/v: " << std::hex << k //print(key_ptr, key_generator_->size())
+                                        << "/" << v << "\n"; //<< print(value_out, opt_.value_size) << " ";
                             std::terminate();
                         }
-                        else if (std::memcmp(key_vals_[key_str].c_str(), value_out, opt_.value_size))
+                        else if (key_vals_[k] != v)//(std::memcmp(&key_vals_[k], value_out, opt_.value_size))
                         {
-                            std::cerr << "found value does not match inserted. found \"" << std::hex;
-                            print(value_out, opt_.value_size);
-                            std::cerr << "\" expected \"";
-                            print(key_vals_.at(key_ptr).c_str(), opt_.value_size);
-                            std::cerr << "\"\n";
+                            std::cerr << "found value does not match inserted. found \"" << std::hex << v << "\" expected \"" << key_vals_[k] << "\"\n";
                             std::terminate();
                         }
 
