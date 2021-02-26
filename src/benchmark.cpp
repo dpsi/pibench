@@ -132,7 +132,7 @@ benchmark_t::~benchmark_t()
     if (pcm_)
         pcm_->cleanup();
 }
-
+constexpr std::uint_fast8_t mask{ 0b1110'0000 };
 void benchmark_t::load() noexcept
 {
     if(opt_.skip_load)
@@ -151,7 +151,7 @@ void benchmark_t::load() noexcept
         // Generate random value
         auto value_ptr = value_generator_.next();
         auto val = std::string(value_ptr, opt_.value_size);
-        val[0] = '\0';
+        val[0] &= ~mask;
         key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
         
         auto r = tree_->insert(key_ptr, key_generator_->size(), val.c_str(), opt_.value_size);
