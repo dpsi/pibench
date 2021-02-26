@@ -169,7 +169,7 @@ private:
     PCM* pcm_;
 
     /// Key-Value pairs.
-    std::map<std::string, std::string> key_vals_;
+    std::map<std::string, std::string> key_vals_{};
 };
 } // namespace PiBench
 
