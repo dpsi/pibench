@@ -134,6 +134,7 @@ benchmark_t::~benchmark_t()
 }
 
 auto key_mask = 0b1111'1111'1111'1111'1111'1111'0000'0000;
+auto val_mask = key_mask;
 
 void benchmark_t::load() noexcept
 {
@@ -162,7 +163,7 @@ void benchmark_t::load() noexcept
         // constexpr std::uint64_t mask64{ 0b0000'0000'0000'0000'0000'0000'1111'1111 };
         // v &= ~mask64;
         k &= key_mask;
-        v &= 0b0000'0000'1111'1111'1111'1111'1111'1111;
+        v &= val_mask;
         key_vals_.insert({k,v});
         auto r = tree_->insert((const char*) &k, key_generator_->size(), (const char *) &v, opt_.value_size);
         // auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
