@@ -247,7 +247,7 @@ void benchmark_t::run() noexcept
 
                         if (std::strncmp(key_vals_.at(key_ptr).c_str(), value_out, opt_.value_size))
                         {
-                            std::cerr << "found value does not match inserted. found \"" << value_out << "\" expected \"" << key_vals_.at(key_ptr) << "\n";
+                            std::cerr << "found value does not match inserted. found \"" << std::string_view(value_out, opt_.value_size) << "\" expected \"" << key_vals_.at(key_ptr) << "\"\n";
                             std::terminate();
                         }
 
