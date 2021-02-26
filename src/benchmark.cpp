@@ -273,7 +273,7 @@ void benchmark_t::run() noexcept
                         }
                         else if (key_vals_[k] != v)//(std::memcmp(&key_vals_[k], value_out, opt_.value_size))
                         {
-                            std::cerr << "key " << k << " found value does not match inserted. found \"" << std::hex << v << "\" expected \"" << key_vals_[k] << "\"\n";
+                            std::cerr << std::hex << "key " << k << " found value does not match inserted. found \""  << v << "\" expected \"" << key_vals_[k] << "\"\n";
                             for(const auto &[k,v] : key_vals_){
                                 std::cerr << k << "/" << v << "\n";
                             }
