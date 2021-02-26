@@ -132,7 +132,7 @@ benchmark_t::~benchmark_t()
     if (pcm_)
         pcm_->cleanup();
 }
-constexpr std::uint_fast8_t mask{ 0b0000'0111 };
+constexpr std::uint_fast8_t mask{ 0b1110'0000 };
 void benchmark_t::load() noexcept
 {
     if(opt_.skip_load)
