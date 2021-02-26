@@ -150,7 +150,7 @@ void benchmark_t::load() noexcept
         auto value_ptr = value_generator_.next();
         auto val = std::string(value_ptr, opt_.value_size);
         val[0] = '\0';
-        key_vals_.insert({std::string(key_ptr, opt_.key_size),});
+        key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
         
         auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
