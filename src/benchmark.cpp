@@ -165,8 +165,13 @@ void benchmark_t::load() noexcept
         k &= key_mask;
         v &= val_mask;
         key_vals_.insert({k,v});
+
+        uint64_t val_out = 0;
         auto r = tree_->insert((const char*) &k, key_generator_->size(), (const char *) &v, opt_.value_size);
         // auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
+        assert(r);
+
+        auto r = tree_->find((const char*) &k, key_generator_->size(), (char *) &val_out);
         assert(r);
     }
     auto elapsed = sw.elapsed<std::chrono::milliseconds>();
