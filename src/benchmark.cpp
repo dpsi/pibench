@@ -157,8 +157,8 @@ void benchmark_t::load() noexcept
         // key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
         uint64_t k = *reinterpret_cast<const uint64_t *>(key_ptr);
         uint64_t v = *reinterpret_cast<const uint64_t *>(value_ptr);
-        constexpr std::uint64_t mask64{ 0b0000'0000'0000'0000'0000'0000'1111'1111 };
-        v &= ~mask64;
+        // constexpr std::uint64_t mask64{ 0b0000'0000'0000'0000'0000'0000'1111'1111 };
+        // v &= ~mask64;
 
         key_vals_.insert({k,v});
         
@@ -274,6 +274,9 @@ void benchmark_t::run() noexcept
                         else if (key_vals_[k] != v)//(std::memcmp(&key_vals_[k], value_out, opt_.value_size))
                         {
                             std::cerr << "found value does not match inserted. found \"" << std::hex << v << "\" expected \"" << key_vals_[k] << "\"\n";
+                            for(const auto &[k,v] : key_vals_){
+                                std::cerr << k << "/" << v << "\n";
+                            }
                             std::terminate();
                         }
 
