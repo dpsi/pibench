@@ -262,7 +262,7 @@ void benchmark_t::run() noexcept
                                         << "/" << print(value_out, opt_.value_size) << " ";
                             std::terminate();
                         }
-                        else if (std::strncmp(key_vals_[key_str].c_str(), value_out, opt_.value_size))
+                        else if (std::memcmp(key_vals_[key_str].c_str(), value_out, opt_.value_size))
                         {
                             std::cerr << "found value does not match inserted. found \"" << std::hex;
                             print(value_out, opt_.value_size);
