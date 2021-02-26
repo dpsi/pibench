@@ -257,7 +257,7 @@ void benchmark_t::run() noexcept
                             std::cerr << "found value does not match inserted. found \"" << std::hex;
                             print(value_out, opt_.value_size);
                             std::cerr << "\" expected \"";
-                            print(key_vals_.at(key_ptr), opt_.value_size);
+                            print(key_vals_.at(key_ptr).c_str(), opt_.value_size);
                             std::cerr << "\"\n";
                             std::terminate();
                         }
