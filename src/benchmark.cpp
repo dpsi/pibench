@@ -163,7 +163,7 @@ void benchmark_t::load() noexcept
         // constexpr std::uint64_t mask64{ 0b0000'0000'0000'0000'0000'0000'1111'1111 };
         // v &= ~mask64;
         k &= key_mask;
-        // v &= val_mask;
+        v &= val_mask;
         key_vals_.insert({k,v});
 
         uint64_t val_out = 0;
