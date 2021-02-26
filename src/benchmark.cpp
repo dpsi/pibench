@@ -15,7 +15,7 @@
 
 void print(const char * v, size_t len){
     for(size_t i = 0; i < len; i++){
-        std::cerr << v[i];
+        std::cerr << +v[i];
     }
 }
 
