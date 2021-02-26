@@ -12,11 +12,13 @@
 #include <regex>            // std::regex_replace
 #include <sys/utsname.h>    // uname
 
-
-void print(const char * v, size_t len){
-    for(size_t i = 0; i < len; i++){
+const char *print(const char *v, size_t len)
+{
+    for (size_t i = 0; i < len; i++)
+    {
         std::cerr << +v[i];
     }
+    return "";
 }
 
 namespace PiBench
@@ -253,7 +255,13 @@ void benchmark_t::run() noexcept
                     {
                         auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
 
-                        if (key_vals_.find(key_ptr) == key_vals_.end() || std::strncmp(key_vals_[key_ptr].c_str(), value_out, opt_.value_size))
+                        if (key_vals_.find(key_ptr) == key_vals_.end())
+                        {
+                            std::cerr   << "key not found? k/v: " << print(key_ptr, key_generator_->size())
+                                        << "/" << print(value_out, opt_.value_size) << " ";
+                            std::terminate();
+                        }
+                        else if (std::strncmp(key_vals_[key_ptr].c_str(), value_out, opt_.value_size))
                         {
                             std::cerr << "found value does not match inserted. found \"" << std::hex;
                             print(value_out, opt_.value_size);
