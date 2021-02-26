@@ -159,10 +159,11 @@ void benchmark_t::load() noexcept
         uint64_t v = *reinterpret_cast<const uint64_t *>(value_ptr);
         // constexpr std::uint64_t mask64{ 0b0000'0000'0000'0000'0000'0000'1111'1111 };
         // v &= ~mask64;
-
+        k &= 0b0000'0000'1111'1111'1111'1111'1111'1111;
+        v &= 0b0000'0000'1111'1111'1111'1111'1111'1111;
         key_vals_.insert({k,v});
-        
-        auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
+        auto r = tree_->insert((const char*) &k, key_generator_->size(), (const char *) &v, opt_.value_size);
+        // auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
     }
     auto elapsed = sw.elapsed<std::chrono::milliseconds>();
@@ -261,9 +262,11 @@ void benchmark_t::run() noexcept
                     {
                     case operation_t::READ:
                     {
-                        auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
-                        // std::string key_str{key_ptr, key_generator_->size()};
                         uint64_t k = *reinterpret_cast<const uint64_t *>(key_ptr);
+                        k &= 0b0000'0000'1111'1111'1111'1111'1111'1111;
+                        auto r = tree_->find((const char *) &k, key_generator_->size(), value_out);
+                        // std::string key_str{key_ptr, key_generator_->size()};
+                        
                         uint64_t v = *reinterpret_cast<const uint64_t *>(value_out);
                         if (key_vals_.find(k) == key_vals_.end())
                         {
