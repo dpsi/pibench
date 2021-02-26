@@ -132,8 +132,6 @@ benchmark_t::~benchmark_t()
     if (pcm_)
         pcm_->cleanup();
 }
-constexpr std::uint_fast8_t mask{ 0b1110'0000 };
-constexpr std::uint64_t mask64{ 0b0000'0000'0000'0000'0000'0000'0000'0111 };
 
 void benchmark_t::load() noexcept
 {
@@ -159,7 +157,7 @@ void benchmark_t::load() noexcept
         // key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
         uint64_t k = *reinterpret_cast<const uint64_t *>(key_ptr);
         uint64_t v = *reinterpret_cast<const uint64_t *>(value_ptr);
-
+        constexpr std::uint64_t mask64{ 0b1111'0000'0000'0000'0000'0000'0000'0000 };
         v &= ~mask64;
 
         key_vals_.insert({k,v});
