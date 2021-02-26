@@ -133,7 +133,7 @@ benchmark_t::~benchmark_t()
         pcm_->cleanup();
 }
 
-auto key_mask = 0b0000'0000'0000'0000'0000'0000'1111'1111;//0b1111'1111'1111'1111'1111'1111'0000'0000;
+auto key_mask = 0b0000'0000'1111'1111'1111'1111'1111'1111;
 auto val_mask = key_mask;
 
 void benchmark_t::load() noexcept
