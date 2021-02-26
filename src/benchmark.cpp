@@ -142,7 +142,7 @@ void benchmark_t::load() noexcept
         // Generate random value
         auto value_ptr = value_generator_.next();
         
-        key_vals_.insert(key_ptr, value_ptr);
+        key_vals_.insert({key_ptr, value_ptr});
         
         auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
