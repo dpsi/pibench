@@ -133,6 +133,8 @@ benchmark_t::~benchmark_t()
         pcm_->cleanup();
 }
 constexpr std::uint_fast8_t mask{ 0b1110'0000 };
+constexpr std::uint64_t mask64{ 0b1110'0000'0000'0000'0000'0000'0000'0000 };
+
 void benchmark_t::load() noexcept
 {
     if(opt_.skip_load)
@@ -157,6 +159,9 @@ void benchmark_t::load() noexcept
         // key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
         uint64_t k = *reinterpret_cast<const uint64_t *>(key_ptr);
         uint64_t v = *reinterpret_cast<const uint64_t *>(value_ptr);
+
+        v &= ~mask64;
+
         key_vals_.insert({k,v});
         
         auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
