@@ -147,7 +147,7 @@ public:
     void run() noexcept;
 
     /// Maximum number of records to be scanned.
-    static constexpr size_t MAX_SCAN = 1000;
+    static constexpr const size_t MAX_SCAN = 1000;
 
 private:
     /// Tree data structure being benchmarked.
@@ -167,6 +167,9 @@ private:
 
     /// Intel PCM handler.
     PCM* pcm_;
+
+    /// Key-Value pairs.
+    std::map<std::string, std::string> key_vals_;
 };
 } // namespace PiBench
 

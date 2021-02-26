@@ -81,7 +81,8 @@ benchmark_t::benchmark_t(tree_api* tree, const options_t& opt) noexcept
       opt_(opt),
       op_generator_(opt.read_ratio, opt.insert_ratio, opt.update_ratio, opt.remove_ratio, opt.scan_ratio),
       value_generator_(opt.value_size),
-      pcm_(nullptr)
+      pcm_(nullptr),
+      key_vals_(opt.num_records)
 {
     if (opt.enable_pcm)
     {
@@ -141,7 +142,9 @@ void benchmark_t::load() noexcept
 
         // Generate random value
         auto value_ptr = value_generator_.next();
-
+        
+        key_vals_.insert(key_ptr, value_ptr);
+        
         auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
     }
@@ -155,16 +158,14 @@ void benchmark_t::load() noexcept
 void benchmark_t::run() noexcept
 {
     std::vector<stats_t> global_stats;
-    global_stats.resize(100000); // Avoid overhead of allocation and page fault
-    global_stats.resize(0);
+    global_stats.reserve(100000); // Avoid overhead of allocation and page fault
 
     static thread_local char value_out[value_generator_t::VALUE_MAX];
     char* values_out;
 
     std::vector<stats_t> local_stats(opt_.num_threads);
     for(auto& lc : local_stats) {
-        lc.times.resize(std::ceil(opt_.num_ops/opt_.num_threads)*2);
-        lc.times.resize(0);
+        lc.times.reserve(std::ceil(opt_.num_ops/opt_.num_threads)*2);
     }
 
     // Control variable of monitor thread
@@ -244,6 +245,13 @@ void benchmark_t::run() noexcept
                     case operation_t::READ:
                     {
                         auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
+
+                        if (!std::strncmp(key_vals_.at(key_ptr), value_out, opt_.value_size))
+                        {
+                            std::cerr << "found value does not match inserted. found \"" << value_out << "\" expected \"" << key_vals_.at(key_ptr) << "\n";
+                            std::terminate();
+                        }
+
                         assert(r);
                         break;
                     }
