@@ -253,7 +253,7 @@ void benchmark_t::run() noexcept
                     {
                         auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
 
-                        if (std::strncmp(key_vals_[key_ptr].c_str(), value_out, opt_.value_size))
+                        if (key_vals_.find(key_ptr) == key_vals_.end() || std::strncmp(key_vals_[key_ptr].c_str(), value_out, opt_.value_size))
                         {
                             std::cerr << "found value does not match inserted. found \"" << std::hex;
                             print(value_out, opt_.value_size);
