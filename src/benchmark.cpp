@@ -152,7 +152,7 @@ void benchmark_t::load() noexcept
         val[0] = '\0';
         key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
         
-        auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
+        auto r = tree_->insert(key_ptr, key_generator_->size(), val.c_str(), opt_.value_size);
         assert(r);
     }
     auto elapsed = sw.elapsed<std::chrono::milliseconds>();
