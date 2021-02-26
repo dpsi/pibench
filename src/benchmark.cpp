@@ -157,7 +157,7 @@ void benchmark_t::load() noexcept
         // key_vals_.insert({std::string(key_ptr, opt_.key_size), val});
         uint64_t k = *reinterpret_cast<const uint64_t *>(key_ptr);
         uint64_t v = *reinterpret_cast<const uint64_t *>(value_ptr);
-        key_vals_.insert(k,v);
+        key_vals_.insert({k,v});
         
         auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
