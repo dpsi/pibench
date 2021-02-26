@@ -12,6 +12,13 @@
 #include <regex>            // std::regex_replace
 #include <sys/utsname.h>    // uname
 
+
+void print(const char * v, size_t len){
+    for(size_t i = 0; i < len; i++){
+        std::cerr << v[i];
+    }
+}
+
 namespace PiBench
 {
 
@@ -247,7 +254,11 @@ void benchmark_t::run() noexcept
 
                         if (std::strncmp(key_vals_.at(key_ptr).c_str(), value_out, opt_.value_size))
                         {
-                            std::cerr << "found value does not match inserted. found \"" << std::string_view(value_out, opt_.value_size) << "\" expected \"" << key_vals_.at(key_ptr) << "\"\n";
+                            std::cerr << "found value does not match inserted. found \"" << std::hex;
+                            print(value_out, opt_.value_size);
+                            std::cerr << "\" expected \"";
+                            print(key_vals_.at(key_ptr), opt_.value_size);
+                            std::cerr << "\"\n";
                             std::terminate();
                         }
 
