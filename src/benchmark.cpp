@@ -255,14 +255,14 @@ void benchmark_t::run() noexcept
                     case operation_t::READ:
                     {
                         auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
-
-                        if (key_vals_.find(key_ptr) == key_vals_.end())
+                        std::string key_str{key_ptr, key_generator_->size()};
+                        if (key_vals_.find(key_str) == key_vals_.end())
                         {
                             std::cerr   << "key not found? k/v: " << std::hex << print(key_ptr, key_generator_->size())
                                         << "/" << print(value_out, opt_.value_size) << " ";
                             std::terminate();
                         }
-                        else if (std::strncmp(key_vals_[key_ptr].c_str(), value_out, opt_.value_size))
+                        else if (std::strncmp(key_vals_[key_str].c_str(), value_out, opt_.value_size))
                         {
                             std::cerr << "found value does not match inserted. found \"" << std::hex;
                             print(value_out, opt_.value_size);
