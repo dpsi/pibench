@@ -245,7 +245,7 @@ void benchmark_t::run() noexcept
                     {
                         auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
 
-                        if (!std::strncmp(key_vals_.at(key_ptr).c_str(), value_out, opt_.value_size))
+                        if (std::strncmp(key_vals_.at(key_ptr).c_str(), value_out, opt_.value_size))
                         {
                             std::cerr << "found value does not match inserted. found \"" << value_out << "\" expected \"" << key_vals_.at(key_ptr) << "\n";
                             std::terminate();
