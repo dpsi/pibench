@@ -257,7 +257,7 @@ void benchmark_t::run() noexcept
 
                         if (key_vals_.find(key_ptr) == key_vals_.end())
                         {
-                            std::cerr   << "key not found? k/v: " << print(key_ptr, key_generator_->size())
+                            std::cerr   << "key not found? k/v: " << std::hex << print(key_ptr, key_generator_->size())
                                         << "/" << print(value_out, opt_.value_size) << " ";
                             std::terminate();
                         }
