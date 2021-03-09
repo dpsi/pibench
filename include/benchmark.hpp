@@ -12,9 +12,13 @@
 #include <memory> // For unique_ptr
 #include <chrono> // std::chrono::high_resolution_clock::time_point
 #include <vector>
+#include <map>
+#include <string_view>
 
 namespace PiBench
 {
+    using KeyView = std::string_view;
+    using ValView = std::string_view;
 
 void print_environment();
 
@@ -167,6 +171,8 @@ private:
 
     /// Intel PCM handler.
     PCM* pcm_;
+
+    std::map<KeyView, ValView> kvs_{};
 };
 } // namespace PiBench
 

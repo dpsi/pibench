@@ -142,6 +142,7 @@ void benchmark_t::load() noexcept
         // Generate random value
         auto value_ptr = value_generator_.next();
 
+        kvs_.emplace({key_ptr, key_generator_->size()}, {value_ptr, opt_.value_size});
         auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
     }
@@ -232,6 +233,7 @@ void benchmark_t::run() noexcept
 
                     // Generate random scrambled key
                     auto key_ptr = key_generator_->next(op == operation_t::INSERT ? true : false);
+                    KeyView key_view(key_ptr, key_generator_->size());
 
                     auto measure_latency = random_bool();
                     if(measure_latency)
@@ -245,6 +247,7 @@ void benchmark_t::run() noexcept
                     {
                         auto r = tree_->find(key_ptr, key_generator_->size(), value_out);
                         assert(r);
+                        assert(!std::memcmp(kvs_[key_view].data(), value_out, opt_.value_size));
                         break;
                     }
 
