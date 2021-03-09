@@ -142,7 +142,7 @@ void benchmark_t::load() noexcept
         // Generate random value
         auto value_ptr = value_generator_.next();
 
-        kvs_.emplace(std::string_view{key_ptr, key_generator_->size()}, std::string_view{value_ptr, opt_.value_size});
+        kvs_.emplace(KeyView{key_ptr, key_generator_->size()}, ValView{value_ptr, opt_.value_size});
         auto r = tree_->insert(key_ptr, key_generator_->size(), value_ptr, opt_.value_size);
         assert(r);
     }

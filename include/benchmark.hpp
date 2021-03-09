@@ -17,7 +17,7 @@
 
 namespace PiBench
 {
-    using KeyView = std::string_view;
+    using KeyView = std::string;
     using ValView = std::string_view;
 
 void print_environment();
