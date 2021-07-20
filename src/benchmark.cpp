@@ -182,7 +182,8 @@ void benchmark_t::run() noexcept
         before_sstate = std::make_unique<SystemCounterState>();
         *before_sstate = getSystemCounterState();
     }
-
+    auto start_time = std::time(nullptr);
+    std::cout << std::asctime(std::localtime(&start_time)) << "\n";
     float elapsed = 0.0;
     stopwatch_t sw;
     omp_set_nested(true);
@@ -303,6 +304,8 @@ void benchmark_t::run() noexcept
         }
     }
     omp_set_nested(false);
+    auto end_time = std::time(nullptr);
+    std::cout << std::asctime(std::localtime(&end_time)) << "\n";
 
     std::unique_ptr<SystemCounterState> after_sstate;
     if (opt_.enable_pcm)
