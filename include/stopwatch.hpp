@@ -60,7 +60,7 @@ public:
         static_assert(is_duration<T>::value);
 
         stop_ = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<float, typename T::period> e = stop - start_;
+        std::chrono::duration<float, typename T::period> e = stop_ - start_;
         return e.count();
     }
 
