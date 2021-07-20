@@ -59,7 +59,7 @@ public:
     {
         static_assert(is_duration<T>::value);
 
-        auto stop = std::chrono::high_resolution_clock::now();
+        stop_ = std::chrono::high_resolution_clock::now();
         std::chrono::duration<float, typename T::period> e = stop - start_;
         return e.count();
     }
@@ -91,9 +91,13 @@ public:
             return false;
     }
 
+    auto get_start() const noexcept { return start_; }
+    auto get_stop() const noexcept { return stop_; }
+
 private:
     /// Time point when the stopwatched started.
     std::chrono::high_resolution_clock::time_point start_;
+    std::chrono::high_resolution_clock::time_point stop_;
 };
 } // namespace PiBench
 #endif

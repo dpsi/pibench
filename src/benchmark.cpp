@@ -307,6 +307,10 @@ void benchmark_t::run() noexcept
     auto end_time = std::time(nullptr);
     std::cout << std::asctime(std::localtime(&end_time)) << "\n";
 
+    std::time_t ttp = std::chrono::system_clock::to_time_t(sw.get_start());
+    auto ttp2 = std::chrono::system_clock::to_time_t(sw.get_stop());
+    std::cout << std::ctime(&ttp) << " " << std::ctime(&ttp2) << "\n";
+
     std::unique_ptr<SystemCounterState> after_sstate;
     if (opt_.enable_pcm)
     {
